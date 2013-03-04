@@ -2,23 +2,34 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package drawingtable;
 
+import java.applet.Applet;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Event;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
+import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseMotionAdapter;
 
 /**
  *
  * @author Lauri Suomalainen
  */
-public class GUI implements Runnable{
-    
+public class GUI extends JApplet implements Runnable {
+
     private JFrame frame;
-    
-    public GUI(){};
+
+    public GUI() {
+        MouseListener listener;
+    }
+
+    ;
 
     @Override
     public void run() {
@@ -31,13 +42,27 @@ public class GUI implements Runnable{
 
         frame.pack();
         frame.setVisible(true);
+
+        
     }
 
     private void getComponents(Container contentPane) {
-        BasePicture pic = new BasePicture("C:/Users/Acer/Downloads/1360965450088.jpg");
+        
+        BasePicture pic = new BasePicture("haisuli.jpg");
         JLabel label = new JLabel(new ImageIcon(pic.getBasePicture()));
         contentPane.add(label);
         
-
-}
+        
+        label.addMouseMotionListener(new MouseAdapter() {
+            Graphics g = getGraphics();
+            private int x, y;
+            int lastx, lasty = 0;
+            public void mouseDragged(MouseEvent e) {
+                x = e.getX();
+                y = e.getY();
+                g.drawLine(lastx, lasty, x, y);
+                System.out.println("LOL");
+            }
+        });
+    }
 }
