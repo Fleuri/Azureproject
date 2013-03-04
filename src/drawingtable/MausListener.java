@@ -21,20 +21,27 @@ public class MausListener implements MouseInputListener {
     int lastX;
     int lastY;
     Component component;
+  
     
     public MausListener(Component component) {
         this.component = component;
+        
+        
     }
     
 
     @Override
     public void mouseClicked(MouseEvent e) {
-       // throw new UnsupportedOperationException("Not supported yet.");
+       Graphics g = component.getGraphics();
+       g.drawLine(lastX, lastY, lastX, lastY);
+       
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet.");
+        Graphics g = component.getGraphics();
+        g.drawLine(lastX, lastY, lastX, lastY);
+        
     }
 
     @Override
