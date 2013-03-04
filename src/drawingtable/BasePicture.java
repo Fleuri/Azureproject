@@ -41,6 +41,31 @@ public class BasePicture {
         //picture = blank.jpg tai jotain
         
     }
+    public BufferedImage getBasePicture() {
+        return picture;
+    }
+    public boolean setNewBasePicture(File f) {
+        BufferedImage tempPic = null;
+        try {
+            tempPic = ImageIO.read(f);
+        } catch (IOException e) {
+            System.out.println(e);
+            return false; // return joko viesti tai blanko kuva.
+    }
+        picture = tempPic;
+        return true;
+}
+    public boolean setNewBasePicture(String fileName) {
+        BufferedImage tempPic = null;
+        try {
+            tempPic = ImageIO.read(new File(fileName));
+        } catch (IOException e) {
+            System.out.println(e);
+            return false; // return joko viesti tai blanko kuva.
+    }
+        picture = tempPic;
+        return true;
+}
 }
 
 

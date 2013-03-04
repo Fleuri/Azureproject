@@ -9,6 +9,6 @@ package drawingtable;
  *
  * @author Lauri Suomalainen
  */
-class Layer {
+public class Layer {
 
 }
