@@ -111,6 +111,7 @@ public class GUI extends JApplet implements Runnable {
 
     private void addMouseListener(Component component) {
         listener = new MausListener(component);
+        listener.giveImage(icon.getImage());
         component.addMouseListener(listener);
         component.addMouseMotionListener(listener);
     }
