@@ -88,15 +88,20 @@ public class GUI extends JApplet implements Runnable {
         saveImageActionPerformed(icon.getImage());
     }
 
-    private Image loadmenu(java.awt.event.ActionEvent evt) {
-        Image img = loadImageActionPerformed();
-        return img;      
-    }
+//    private Image loadmenu(java.awt.event.ActionEvent evt) {
+//        Image img = loadImageActionPerformed();
+//        return img;      
+//    }
 
     private void getComponents(Container contentPane) {
         
-        Image image = loadImageActionPerformed();
-        icon = new ImageIcon(image);
+        File file = loadImageActionPerformed();
+        if (file == null) {
+            pic = new BasePicture();
+        } else {
+        pic = new BasePicture(file);
+    }
+        icon = new ImageIcon(pic.getBasePicture());
 
         JLabel label = new JLabel(icon);
         contentPane.add(label);
@@ -127,20 +132,14 @@ public class GUI extends JApplet implements Runnable {
         }
     }
 
-    private Image loadImageActionPerformed() {
+    private File loadImageActionPerformed() {
         JFileChooser chooser = new JFileChooser();
         BufferedImage img;
         
         chooser.showOpenDialog(null);
         File file = chooser.getSelectedFile();
 
-        try {
-            img = ImageIO.read(file);
-        } catch (IOException e1) {
-            System.out.println("WRONG!!!");
-            return null;
-        }
-        return img;
+        return file;
     }
 
     private static BufferedImage toBufferedImage(Image img) {
