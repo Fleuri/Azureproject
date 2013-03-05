@@ -17,7 +17,7 @@ import java.util.Stack;
 public class BasePicture {
     
     private BufferedImage picture;
-    private Stack layerStack = new Stack<Layer>();
+    
     
     public BasePicture(File f) {
         picture = null;
