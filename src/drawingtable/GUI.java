@@ -32,7 +32,7 @@ public class GUI extends JApplet implements Runnable {
     @Override
     public void run() {
         frame = new JFrame("DrawingTable");
-        frame.setPreferredSize(new Dimension(200, 100));
+        frame.setPreferredSize(new Dimension(1000, 1000));
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,7 +46,8 @@ public class GUI extends JApplet implements Runnable {
 
     private void getComponents(Container contentPane) {
         
-        BasePicture pic = new BasePicture("C:/Users/Acer/Downloads/Aatujakelkka.jpg");
+        BasePicture pic = new BasePicture("haisuli.jpg");
+       
         JLabel label = new JLabel(new ImageIcon(pic.getBasePicture()));
         contentPane.add(label);
     }
