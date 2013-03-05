@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package drawingtable;
 
 /**
@@ -24,11 +21,12 @@ class PixeGrabber {
         this.image = image;
     }
 
-    public void setVariables(int x, int y, int w, int h) {
+    public void createGrabber(int x, int y, int w, int h) {
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
+        grabber = new PixelGrabber(image, x, y, w, h, true);
     }
 
     public void createGrabber() {
@@ -39,7 +37,6 @@ class PixeGrabber {
         try {
             grabber.grabPixels();
         } catch (InterruptedException ex) {
-            ex.printStackTrace();
         }
         int[] pixArray = (int[])grabber.getPixels();
         return pixArray;
