@@ -45,7 +45,7 @@ public class GUI extends JApplet implements Runnable {
     public void run() {
         frame = new JFrame("DrawingTable");
         getComponents(frame.getContentPane());
-        
+
         JMenuBar menu = new JMenuBar();
         JMenu a = new JMenu();
         a.setText("FILE");
@@ -59,42 +59,47 @@ public class GUI extends JApplet implements Runnable {
         menu.add(a);
         a.add(save);
         
+//        JMenuItem load = new JMenuItem();
+//        save.setText("Load");
+//        load.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                loadmenu(evt);
+//            }
+//        });
+
         frame.setJMenuBar(menu);
         menu.setVisible(true);
 
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        
+
         addMouseListener(frame.getContentPane().getComponent(0));
-        frame.setPreferredSize(new Dimension(pic.getBasePicture().getWidth(), pic.getBasePicture().getHeight()));
+        frame.setPreferredSize(new Dimension(1000, 1000));
         frame.pack();
         frame.setVisible(true);
 
 
 
     }
-    
-    private void savemenu(java.awt.event.ActionEvent evt) {                                                  
+
+    private void savemenu(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         saveImageActionPerformed(icon.getImage());
     }
 
+    private Image loadmenu(java.awt.event.ActionEvent evt) {
+        Image img = loadImageActionPerformed();
+        return img;      
+    }
+
     private void getComponents(Container contentPane) {
-
-        pic = new BasePicture("haisuli.jpg");
-
-        icon = new ImageIcon(pic.getBasePicture());       
         
-        
+        Image image = loadImageActionPerformed();
+        icon = new ImageIcon(image);
+
         JLabel label = new JLabel(icon);
         contentPane.add(label);
-//        saveB.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                saveImageActionPerformed(icon.getImage());
-//            }
-//        });
 
 
     }
@@ -120,6 +125,22 @@ public class GUI extends JApplet implements Runnable {
                 e.printStackTrace();
             }
         }
+    }
+
+    private Image loadImageActionPerformed() {
+        JFileChooser chooser = new JFileChooser();
+        BufferedImage img;
+        
+        chooser.showOpenDialog(null);
+        File file = chooser.getSelectedFile();
+
+        try {
+            img = ImageIO.read(file);
+        } catch (IOException e1) {
+            System.out.println("WRONG!!!");
+            return null;
+        }
+        return img;
     }
 
     private static BufferedImage toBufferedImage(Image img) {
