@@ -1,7 +1,7 @@
 <%-- 
     Document   : index
     Created on : 5.3.2013, 12:58:43
-    Author     : Acer
+    Author     : Late the man
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

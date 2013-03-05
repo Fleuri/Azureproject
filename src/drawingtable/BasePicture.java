@@ -17,12 +17,14 @@ import java.util.Stack;
 public class BasePicture {
     
     private BufferedImage picture;
+    private BufferedImage originalPicture;
     
     
     public BasePicture(File f) {
         picture = null;
         try {
             picture = ImageIO.read(f);
+            originalPicture = picture;
         } catch (IOException e) {
             System.out.println(e);
             System.exit(0); // return joko viesti tai blanko kuva.
@@ -32,6 +34,7 @@ public class BasePicture {
         picture = null;
         try {
             picture = ImageIO.read(new File(FileName));
+            originalPicture = picture;
         } catch (IOException e) {
             System.out.println(e);
             System.exit(0); // return joko viesti tai blanko kuva.
@@ -44,10 +47,16 @@ public class BasePicture {
     public BufferedImage getBasePicture() {
         return picture;
     }
+    
+    public BufferedImage getOriginalBasePicture(){
+        return originalPicture;
+    }
+    
     public boolean setNewBasePicture(File f) {
         BufferedImage tempPic = null;
         try {
             tempPic = ImageIO.read(f);
+            originalPicture = picture;
         } catch (IOException e) {
             System.out.println(e);
             return false; // return joko viesti tai blanko kuva.
@@ -59,6 +68,7 @@ public class BasePicture {
         BufferedImage tempPic = null;
         try {
             tempPic = ImageIO.read(new File(fileName));
+            originalPicture = picture;
         } catch (IOException e) {
             System.out.println(e);
             return false; // return joko viesti tai blanko kuva.
