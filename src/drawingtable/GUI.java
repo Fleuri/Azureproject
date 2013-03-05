@@ -22,6 +22,7 @@ public class GUI extends JApplet implements Runnable {
 
     private JFrame frame;
     MausListener listener;
+    BasePicture pic = new BasePicture("haisuli.jpg");
     
     public GUI() {
         
@@ -32,7 +33,7 @@ public class GUI extends JApplet implements Runnable {
     @Override
     public void run() {
         frame = new JFrame("DrawingTable");
-        frame.setPreferredSize(new Dimension(1000, 1000));
+        frame.setPreferredSize(new Dimension(pic.getBasePicture().getWidth(), pic.getBasePicture().getHeight()));
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -45,8 +46,6 @@ public class GUI extends JApplet implements Runnable {
     }
 
     private void getComponents(Container contentPane) {
-        
-        BasePicture pic = new BasePicture("haisuli.jpg");
        
         JLabel label = new JLabel(new ImageIcon(pic.getBasePicture()));
         contentPane.add(label);
