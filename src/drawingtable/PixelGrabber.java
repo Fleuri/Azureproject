@@ -29,10 +29,6 @@ class PixeGrabber {
         grabber = new PixelGrabber(image, x, y, w, h, true);
     }
 
-    public void createGrabber() {
-        grabber = new PixelGrabber(image, x, y, w, h, true);
-    }
-
     public int[] getPixel() {
         try {
             grabber.grabPixels();
@@ -40,6 +36,7 @@ class PixeGrabber {
         }
         int[] pixArray = (int[])grabber.getPixels();
         return pixArray;
-
     }
+    
+
 }

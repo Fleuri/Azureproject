@@ -11,7 +11,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.awt.image.PixelGrabber;
 import javax.swing.event.MouseInputListener;
 
@@ -26,16 +29,16 @@ public class MausListener implements MouseInputListener {
     Component component;
     Image tausta;
     PixeGrabber grab;
+    Graphics g;
 
-    public MausListener(Component component) {
+    public MausListener(Component component, Graphics g) {
         this.component = component;
-
-
+        this.g = g;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        Graphics g = component.getGraphics();
+        g = component.getGraphics();
         g.drawLine(lastX, lastY, lastX, lastY);
 
     }
@@ -84,18 +87,17 @@ public class MausListener implements MouseInputListener {
 
     private void draw(MouseEvent e) {
         if (e.getModifiers() == 16) {
-            Graphics g = component.getGraphics();
+            g = component.getGraphics();
             g.setColor(Color.RED);
             g.drawLine(lastX, lastY, e.getX(), e.getY());
             lastX = e.getX();
             lastY = e.getY();
         } else if (e.getModifiers() == 4) {
-            
             grab.createGrabber(lastX, lastY, 1, 1);
             int[] pikseli = grab.getPixel();
             //System.out.println("pikseli: " + pikseli[0] +" size: " + pikseli.length);
            
-            Graphics g = component.getGraphics();
+            g = component.getGraphics();
             Color c = new Color(pikseli[0]);
             g.setColor(c);
             
@@ -103,5 +105,9 @@ public class MausListener implements MouseInputListener {
             lastX = e.getX();
             lastY = e.getY();
         }
+    }
+    
+    public Graphics getGraphics() {
+        return this.g;
     }
 }
