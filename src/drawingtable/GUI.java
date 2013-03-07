@@ -4,26 +4,23 @@
  */
 package drawingtable;
 
-import java.applet.Applet;
+import java.awt.AWTException;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.MenuBar;
 
 /**
  *
@@ -35,6 +32,7 @@ public class GUI extends JApplet implements Runnable {
     MausListener listener;
     ImageIcon icon;
     BasePicture pic;
+    Robot robot;
 
     public GUI() {
     }
@@ -53,80 +51,95 @@ public class GUI extends JApplet implements Runnable {
         save.setText("Save");
         save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                savemenu(evt);
+                try {
+                    savemenu(evt);
+                } catch (AWTException ex) {
+                    Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         menu.add(a);
         a.add(save);
-        
-//        JMenuItem load = new JMenuItem();
-//        save.setText("Load");
-//        load.addActionListener(new java.awt.event.ActionListener() {
-//            public void actionPerformed(java.awt.event.ActionEvent evt) {
-//                loadmenu(evt);
-//            }
-//        });
+
+        JMenuItem load = new JMenuItem();
+        load.setText("Load");
+        load.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadmenu(evt);
+            }
+        });
+        a.add(load);
 
         frame.setJMenuBar(menu);
         menu.setVisible(true);
-
-
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-
         addMouseListener(frame.getContentPane().getComponent(0));
-        frame.setPreferredSize(new Dimension(1000, 1000));
+        frame.setPreferredSize(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
         frame.pack();
         frame.setVisible(true);
 
 
 
+
+
     }
 
-    private void savemenu(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-        saveImageActionPerformed(icon.getImage());
+    private void savemenu(java.awt.event.ActionEvent evt) throws AWTException {
+        saveImageActionPerformed();
     }
 
-//    private Image loadmenu(java.awt.event.ActionEvent evt) {
-//        Image img = loadImageActionPerformed();
-//        return img;      
-//    }
-
-    private void getComponents(Container contentPane) {
-        
+    private void loadmenu(java.awt.event.ActionEvent evt) {
         File file = loadImageActionPerformed();
         if (file == null) {
             pic = new BasePicture();
         } else {
-        pic = new BasePicture(file);
-    }
+            pic = new BasePicture(file);
+        }
         icon = new ImageIcon(pic.getBasePicture());
+        System.out.println("Kaakka");
+        JLabel temp = (JLabel) frame.getContentPane().getComponent(0);
+        temp.setIcon(icon);
+        frame.setPreferredSize(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
+        frame.pack();
+    }
+
+    private void getComponents(Container contentPane) {
+        File file = loadImageActionPerformed();
+        if (file == null) {
+            pic = new BasePicture();
+        } else {
+            pic = new BasePicture(file);
+        }
+        icon = new ImageIcon(pic.getBasePicture());
+
 
         JLabel label = new JLabel(icon);
         contentPane.add(label);
-
-
+        //System.out.println();
     }
 
     private void addMouseListener(Component component) {
-        listener = new MausListener(component);
+        BufferedImage BF = pic.getBasePicture();
+        Graphics g = BF.createGraphics();
+        listener = new MausListener(component, g);
         listener.giveImage(icon.getImage());
         component.addMouseListener(listener);
         component.addMouseMotionListener(listener);
     }
 
-    private void saveImageActionPerformed(Image image) {
+    private void saveImageActionPerformed() {
         JFileChooser filechooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "JPG Images", "jpg");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG Images", "jpg");
         filechooser.setFileFilter(filter);
+//        robot  = new Robot();
+//        BufferedImage buffer = pic.getBasePicture();
+//        Rectangle screenRect = new Rectangle((int)(frame.getLocationOnScreen().getX()), (int)(frame.getLocationOnScreen().getY()), (int)(frame.getSize().getHeight()), (int)(frame.getSize().getWidth()));
+//        BufferedImage capture = new Robot().createScreenCapture(screenRect);
         int result = filechooser.showSaveDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File saveFile = filechooser.getSelectedFile();
-            BufferedImage bufferI = toBufferedImage(image);
             try {
-                ImageIO.write(bufferI, "jpg", saveFile);
+                ImageIO.write(pic.getBasePicture(), "jpg", saveFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -136,7 +149,6 @@ public class GUI extends JApplet implements Runnable {
     private File loadImageActionPerformed() {
         JFileChooser chooser = new JFileChooser();
         BufferedImage img;
-        
         chooser.showOpenDialog(null);
         File file = chooser.getSelectedFile();
 
