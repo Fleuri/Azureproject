@@ -181,10 +181,6 @@ public boolean saveImage() {
 JFileChooser filechooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG Images", "jpg");
         filechooser.setFileFilter(filter);
-//        robot  = new Robot();
-//        BufferedImage buffer = pic.getBasePicture();
-//        Rectangle screenRect = new Rectangle((int)(frame.getLocationOnScreen().getX()), (int)(frame.getLocationOnScreen().getY()), (int)(frame.getSize().getHeight()), (int)(frame.getSize().getWidth()));
-//        BufferedImage capture = new Robot().createScreenCapture(screenRect);
         int result = filechooser.showSaveDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File saveFile = filechooser.getSelectedFile();
