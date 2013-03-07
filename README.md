@@ -4,4 +4,8 @@ Azureproject
 Azure project for Azure Code Camp 2013
 :)
 
-http://www.cs.helsinki.fi/group/java/s12/ohja/materiaali.html
+Ohja-matsku GUIsta: http://www.cs.helsinki.fi/group/java/s12/ohja/materiaali.html
+
+Javan serveritutoriaali: http://www.oracle.com/technetwork/java/socket-140484.html#server
+
+SQL Azure sessions: http://blogs.msdn.com/b/sqlazure/archive/2010/08/04/10046103.aspx
