@@ -62,6 +62,7 @@ final class PaintWindow extends JFrame {
         makeColorButton(Color.GREEN);
         makeColorButton(Color.BLACK);
         makeColorButton(Color.WHITE);
+        makeColorButton(Color.YELLOW);
 
 //creates the clear button
         JButton clearButton = new JButton("Clear");
@@ -182,6 +183,8 @@ class PadDraw extends JComponent {
             public void mousePressed(MouseEvent e) {
                 oldX = e.getX();
                 oldY = e.getY();
+                graphics2D.fillOval(oldX, oldY, thickness, thickness);
+                repaint();
             }
         });
 
@@ -193,7 +196,8 @@ class PadDraw extends JComponent {
                 currentX = e.getX();
                 currentY = e.getY();
 
-                drawLinePlz(oldX, oldY, currentX, currentY, thickness);
+                //drawLinePlz(oldX, oldY, currentX, currentY, thickness);
+                graphics2D.fillOval(oldX, oldY, thickness, thickness);
 
 
                 repaint();
@@ -218,10 +222,11 @@ class PadDraw extends JComponent {
     }
 
     public void clear() {
-
+        
+        Color color = graphics2D.getColor();
         graphics2D.setPaint(Color.white);
         graphics2D.fillRect(0, 0, getSize().width, getSize().height);
-        graphics2D.setPaint(Color.black);
+        graphics2D.setPaint(color);
         repaint();
     }
 
