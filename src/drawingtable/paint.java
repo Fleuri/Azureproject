@@ -17,19 +17,21 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class paint {
-    
-    static PaintWindow frame;
+
+    public static PaintWindow frame;
 
     public static void main(String[] args) {
         frame = new PaintWindow();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setVisible(true);
-        
-    }
-        
+
     }
 
+    public PaintWindow getFrame() {
+        return this.frame;
+    }
+}
 
 final class PaintWindow extends JFrame {
 
@@ -82,9 +84,17 @@ final class PaintWindow extends JFrame {
         });
         menu.add(a);
         a.add(save);
+        JMenuItem load = new JMenuItem();
+        load.setText("Load");
+        load.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadmenu(evt);
+            }
+        });
+        a.add(load);
         setJMenuBar(menu);
         menu.setVisible(true);
-    } 
+    }
 
     /*
      * makes a button that changes the color
@@ -100,6 +110,29 @@ final class PaintWindow extends JFrame {
                 drawPad.changeColor(color);
             }
         });
+    }
+
+    private void loadmenu(java.awt.event.ActionEvent evt) {
+        File file = loadImageActionPerformed();
+        if (file == null) {
+            return;
+        } else {
+            try {
+                BufferedImage tempImage = ImageIO.read(file);
+                drawPad.graphics2D.drawImage(tempImage, null, tempImage.getWidth(), tempImage.getHeight());
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+        }
+    }
+
+    private File loadImageActionPerformed() {
+        JFileChooser chooser = new JFileChooser();
+        BufferedImage img;
+        chooser.showOpenDialog(null);
+        File file = chooser.getSelectedFile();
+
+        return file;
     }
 
     public RenderedImage convertToRenderedImage(Image image) {
@@ -132,6 +165,7 @@ final class PaintWindow extends JFrame {
 
 class PadDraw extends JComponent {
 //this is gonna be your image that you draw on
+
     Image image;
 //this is what we'll be using to draw on
     Graphics2D graphics2D;
@@ -160,8 +194,8 @@ class PadDraw extends JComponent {
                 currentY = e.getY();
 
                 drawLinePlz(oldX, oldY, currentX, currentY, thickness);
-                
-                
+
+
                 repaint();
 
                 oldX = currentX;
@@ -206,37 +240,41 @@ class PadDraw extends JComponent {
         graphics2D.setPaint(theColor);
         repaint();
     }
-    
-    public void drawLinePlz(int oldX,int oldY,int currentX,int currentY,int thickness) {
-  
-  int dX = currentX - oldX;
-  int dY = currentY - oldY;
-  // line length
-  double lineLength = Math.sqrt(dX * dX + dY * dY);
 
-  double scale = (double)(thickness) / (2 * lineLength);
+    public void drawLinePlz(int oldX, int oldY, int currentX, int currentY, int thickness) {
 
-  // The x,y increments from an endpoint needed to create a rectangle...
-  double ddx = -scale * (double)dY;
-  double ddy = scale * (double)dX;
-  ddx += (ddx > 0) ? 0.5 : -0.5;
-  ddy += (ddy > 0) ? 0.5 : -0.5;
-  int dx = (int)ddx;
-  int dy = (int)ddy;
+        int dX = currentX - oldX;
+        int dY = currentY - oldY;
+        // line length
+        double lineLength = Math.sqrt(dX * dX + dY * dY);
 
-  // Now we can compute the corner points...
-  int xPoints[] = new int[4];
-  int yPoints[] = new int[4];
+        double scale = (double) (thickness) / (2 * lineLength);
 
-  xPoints[0] = oldX + dx; yPoints[0] = oldY + dy;
-  xPoints[1] = oldX - dx; yPoints[1] = oldY - dy;
-  xPoints[2] = currentX - dx; yPoints[2] = currentY - dy;
-  xPoints[3] = currentX + dx; yPoints[3] = currentY + dy;
+        // The x,y increments from an endpoint needed to create a rectangle...
+        double ddx = -scale * (double) dY;
+        double ddy = scale * (double) dX;
+        ddx += (ddx > 0) ? 0.5 : -0.5;
+        ddy += (ddy > 0) ? 0.5 : -0.5;
+        int dx = (int) ddx;
+        int dy = (int) ddy;
 
-  graphics2D.fillPolygon(xPoints, yPoints, 4);
-  }
-    
+        // Now we can compute the corner points...
+        int xPoints[] = new int[4];
+        int yPoints[] = new int[4];
+
+        xPoints[0] = oldX + dx;
+        yPoints[0] = oldY + dy;
+        xPoints[1] = oldX - dx;
+        yPoints[1] = oldY - dy;
+        xPoints[2] = currentX - dx;
+        yPoints[2] = currentY - dy;
+        xPoints[3] = currentX + dx;
+        yPoints[3] = currentY + dy;
+
+        graphics2D.fillPolygon(xPoints, yPoints, 4);
+    }
+
     public void changeBrushSize(int size) {
-       thickness = size;
+        thickness = size;
     }
 }
