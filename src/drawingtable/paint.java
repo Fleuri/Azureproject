@@ -119,7 +119,7 @@ final class PaintWindow extends JFrame {
         } else {
             try {
                 BufferedImage tempImage = ImageIO.read(file);
-                drawPad.graphics2D.drawImage(tempImage, null, tempImage.getWidth(), tempImage.getHeight());
+                drawPad.setNewImage(tempImage);
             } catch (IOException e) {
                 System.out.println(e);
             }
@@ -204,13 +204,6 @@ class PadDraw extends JComponent {
         });
     }
 
-//this is the painting bit
-//if it has nothing on it then
-//it creates an image the size of the window
-//sets the value of Graphics as the image
-//sets the rendering
-//runs the clear() method
-//then it draws the image
     public void paintComponent(Graphics g) {
 
         if (image == null) {
@@ -224,10 +217,6 @@ class PadDraw extends JComponent {
         g.drawImage(image, 0, 0, null);
     }
 
-//this is the clear
-//it sets the colors as white
-//then it fills the window with white
-//thin it sets the color back to black
     public void clear() {
 
         graphics2D.setPaint(Color.white);
@@ -276,5 +265,13 @@ class PadDraw extends JComponent {
 
     public void changeBrushSize(int size) {
         thickness = size;
+    }
+
+    void setNewImage(BufferedImage tempImage) {
+            image = tempImage;
+            graphics2D = (Graphics2D) image.getGraphics();
+            graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            getGraphics().drawImage(image, 0, 0, null);
+            
     }
 }
