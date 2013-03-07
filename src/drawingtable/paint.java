@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class paint
 {
@@ -154,23 +155,8 @@ g.drawImage(image, 0, 0, null);
 //it sets the colors as white
 //then it fills the window with white
 //thin it sets the color back to black
-public void clear()
-{
-BufferedImage bImage      = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
-
-//obtain it's graphics
-Graphics2D bImageGraphics = bImage.createGraphics();
-
-//draw the Image (image) into the BufferedImage (bImage)
-bImageGraphics.drawImage(image, null, null);
-
-// cast it to rendered image
-RenderedImage rImage      = (RenderedImage)bImage;
-try {           
-ImageIO.write(rImage, "jpg", new File("kuvei"));
-} catch (IOException e) {
-    System.out.println("trololo");
-}
+public void clear() {
+    
 graphics2D.setPaint(Color.white);
 graphics2D.fillRect(0, 0, getSize().width, getSize().height);
 graphics2D.setPaint(Color.black);
@@ -182,5 +168,37 @@ public void changeColor(Color theColor)
 graphics2D.setPaint(theColor);
 repaint();
 }
+public RenderedImage convertToRenderedImage(Image image) {
+
+    BufferedImage bImage      = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
+    Graphics2D bImageGraphics = bImage.createGraphics();
+    bImageGraphics.drawImage(image, null, null);
+    RenderedImage rImage      = (RenderedImage)bImage;
+    return rImage;
 }
+
+public boolean saveImage() {
+JFileChooser filechooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG Images", "jpg");
+        filechooser.setFileFilter(filter);
+//        robot  = new Robot();
+//        BufferedImage buffer = pic.getBasePicture();
+//        Rectangle screenRect = new Rectangle((int)(frame.getLocationOnScreen().getX()), (int)(frame.getLocationOnScreen().getY()), (int)(frame.getSize().getHeight()), (int)(frame.getSize().getWidth()));
+//        BufferedImage capture = new Robot().createScreenCapture(screenRect);
+        int result = filechooser.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File saveFile = filechooser.getSelectedFile();
+            RenderedImage rImage = convertToRenderedImage(image);
+            try {
+                ImageIO.write(rImage, "jpg", saveFile);
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+}
+
+
 
