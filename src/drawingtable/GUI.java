@@ -61,21 +61,18 @@ public class GUI extends JApplet implements Runnable {
         menu.add(a);
         a.add(save);
 
-//        JMenuItem load = new JMenuItem();
-//        save.setText("Load");
-//        load.addActionListener(new java.awt.event.ActionListener() {
-//            public void actionPerformed(java.awt.event.ActionEvent evt) {
-//                loadmenu(evt);
-//            }
-//        });
+        JMenuItem load = new JMenuItem();
+        load.setText("Load");
+        load.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadmenu(evt);
+            }
+        });
+        a.add(load);
 
         frame.setJMenuBar(menu);
         menu.setVisible(true);
-
-
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-
         addMouseListener(frame.getContentPane().getComponent(0));
         frame.setPreferredSize(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
         frame.pack();
@@ -88,17 +85,25 @@ public class GUI extends JApplet implements Runnable {
     }
 
     private void savemenu(java.awt.event.ActionEvent evt) throws AWTException {
-        // TODO add your handling code here:
-        //saveImageActionPerformed(pic.getBasePicture());
         saveImageActionPerformed();
     }
 
-//    private Image loadmenu(java.awt.event.ActionEvent evt) {
-//        Image img = loadImageActionPerformed();
-//        return img;      
-//    }
-    private void getComponents(Container contentPane) {
+    private void loadmenu(java.awt.event.ActionEvent evt) {
+        File file = loadImageActionPerformed();
+        if (file == null) {
+            pic = new BasePicture();
+        } else {
+            pic = new BasePicture(file);
+        }
+        icon = new ImageIcon(pic.getBasePicture());
+        System.out.println("Kaakka");
+        JLabel temp = (JLabel) frame.getContentPane().getComponent(0);
+        temp.setIcon(icon);
+        frame.setPreferredSize(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
+        frame.pack();
+    }
 
+    private void getComponents(Container contentPane) {
         File file = loadImageActionPerformed();
         if (file == null) {
             pic = new BasePicture();
@@ -107,10 +112,10 @@ public class GUI extends JApplet implements Runnable {
         }
         icon = new ImageIcon(pic.getBasePicture());
 
+
         JLabel label = new JLabel(icon);
         contentPane.add(label);
-
-
+        //System.out.println();
     }
 
     private void addMouseListener(Component component) {
@@ -134,7 +139,7 @@ public class GUI extends JApplet implements Runnable {
         if (result == JFileChooser.APPROVE_OPTION) {
             File saveFile = filechooser.getSelectedFile();
             try {
-                ImageIO.write(pic.getBasePicture(), "png", saveFile);
+                ImageIO.write(pic.getBasePicture(), "jpg", saveFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
