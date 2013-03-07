@@ -28,6 +28,10 @@ public class LoginScreen extends JFrame implements ActionListener {
         label2.setText("Password:");
         text2 = new JPasswordField(15);
 
+        JButton sign = new JButton();
+        sign.setText("Sign up");
+
+
         SUBMIT = new JButton("SUBMIT");
 
         panel = new JPanel(new GridLayout(3, 1));
@@ -36,9 +40,21 @@ public class LoginScreen extends JFrame implements ActionListener {
         panel.add(label2);
         panel.add(text2);
         panel.add(SUBMIT);
+        panel.add(sign);
+        sign.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                //Execute when button is pressed
+                SignUp register = new SignUp();
+                register.setSize(900, 200);
+                register.setVisible(true);
+                panel.removeAll();
+                dispose();
+            }
+        });
         add(panel, BorderLayout.CENTER);
         SUBMIT.addActionListener(this);
         setTitle("LOGIN FORM");
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     public void keyPressed(KeyEvent evt) {
@@ -68,7 +84,7 @@ public class LoginScreen extends JFrame implements ActionListener {
     public static void main(String arg[]) {
         try {
             LoginScreen frame = new LoginScreen();
-            frame.setSize(300, 100);
+            frame.setSize(1000, 200);
             frame.setVisible(true);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
