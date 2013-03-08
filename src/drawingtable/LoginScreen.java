@@ -71,9 +71,9 @@ public class LoginScreen extends JFrame implements ActionListener {
         String value2 = text2.getText();
         if (value1.equals("roseindia") && value2.equals("roseindia")) {
             panel.removeAll();
-            GUI gui = new GUI();
+            paint painter = new paint();
             this.dispose();
-            gui.run();
+            painter.main(new String[0]);
         } else {
             System.out.println("enter the valid username and password");
             JOptionPane.showMessageDialog(this, "Incorrect login or password",
