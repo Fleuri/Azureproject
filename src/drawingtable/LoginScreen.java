@@ -73,7 +73,7 @@ public class LoginScreen extends JFrame implements ActionListener {
             panel.removeAll();
             paint painter = new paint();
             this.dispose();
-            painter.main(new String[0]);
+            painter.init();
         } else {
             System.out.println("enter the valid username and password");
             JOptionPane.showMessageDialog(this, "Incorrect login or password",
