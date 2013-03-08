@@ -4,33 +4,22 @@
  */
 package drawingtable;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
-
 /**
  *
  * @author tanelvir
  */
-public class SignUp extends JFrame implements ActionListener {
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
-    JButton Register;
+public class LoginScreen extends JFrame implements ActionListener {
+
+    JButton SUBMIT;
     JPanel panel;
-    JLabel label1, label2, label3;
-    final JTextField text1, text2, text3;
-    boolean rightPass;
+    JLabel label1, label2;
+    final JTextField text1, text2;
 
-    SignUp() {
-
+    LoginScreen() {
         label1 = new JLabel();
         label1.setText("Username:");
         text1 = new JTextField(15);
@@ -39,52 +28,66 @@ public class SignUp extends JFrame implements ActionListener {
         label2.setText("Password:");
         text2 = new JPasswordField(15);
 
-        label3 = new JLabel();
-        label3.setText("Retype Password:");
-        text3 = new JPasswordField(15);
-
         JButton sign = new JButton();
-        sign.setText("Cancel");
-        
-        rightPass = false;
+        sign.setText("Sign up");
 
 
-        Register = new JButton("Register");
+        SUBMIT = new JButton("SUBMIT");
 
-        panel = new JPanel(new GridLayout(4, 1));
+        panel = new JPanel(new GridLayout(3, 1));
         panel.add(label1);
         panel.add(text1);
         panel.add(label2);
         panel.add(text2);
-        panel.add(label3);
-        panel.add(text3);
-        panel.add(Register);
+        panel.add(SUBMIT);
         panel.add(sign);
+        sign.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                //Execute when button is pressed
+                SignUp register = new SignUp();
+                register.setSize(900, 200);
+                register.setVisible(true);
+                panel.removeAll();
+                dispose();
+            }
+        });
         add(panel, BorderLayout.CENTER);
-        Register.addActionListener(this);
-        setTitle("Give new username and password, please");
+        SUBMIT.addActionListener(this);
+        setTitle("LOGIN FORM");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
+
+    public void keyPressed(KeyEvent evt) {
+        System.out.println("LOL");
+        int key = evt.getKeyCode();
+
+        if (key == 10) {
+            SUBMIT.doClick();
+        }
     }
 
     public void actionPerformed(ActionEvent ae) {
         String value1 = text1.getText();
         String value2 = text2.getText();
-        String value3 = text3.getText();
-        if (value2.equals(value3)) {
-            rightPass = true;
+        if (value1.equals("roseindia") && value2.equals("roseindia")) {
+            panel.removeAll();
+            paint painter = new paint();
+            this.dispose();
+            painter.main(new String[0]);
+        } else {
+            System.out.println("enter the valid username and password");
+            JOptionPane.showMessageDialog(this, "Incorrect login or password",
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
-        else {
-            rightPass = false;
+    }
+
+    public static void main(String arg[]) {
+        try {
+            LoginScreen frame = new LoginScreen();
+            frame.setSize(1000, 200);
+            frame.setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
-//        if (value1.equals("roseindia") && value2.equals("roseindia")) {
-//            panel.removeAll();
-//            GUI gui = new GUI();
-//            this.dispose();
-//            gui.run();
-//        } else {
-//            System.out.println("enter the valid username and password");
-//            JOptionPane.showMessageDialog(this, "Incorrect login or password",
-//                    "Error", JOptionPane.ERROR_MESSAGE);
-//        }
     }
 }
